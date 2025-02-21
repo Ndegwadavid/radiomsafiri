@@ -9,13 +9,40 @@ const Header = () => {
     "/images/pic3.jpg",
   ];
 
+  // Load Voiceflow script when component mounts
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.async = true;
+    script.src = 'https://cdn.voiceflow.com/widget-next/bundle.mjs';
+    
+    script.onload = () => {
+      window.voiceflow.chat.load({
+        verify: { projectID: '67b4eb18ab4534bbe160925a' },
+        url: 'https://general-runtime.voiceflow.com',
+        versionID: 'production'
+      });
+    };
+
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+      // Clean up Voiceflow widget if needed
+      if (window.voiceflow?.chat) {
+        window.voiceflow.chat.destroy();
+      }
+    };
+  }, []);
+
+  // Background image rotation
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prevImage) => (prevImage + 1) % backgroundImages.length);
-    }, 5000); // Change image every 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, [backgroundImages.length]); // Added the dependency here
+  }, [backgroundImages.length]);
 
   return (
     <header
@@ -27,17 +54,12 @@ const Header = () => {
       
       {/* Content */}
       <div className="container mx-auto text-center text-white relative z-10 flex flex-col items-center justify-center h-full">
-        {/* Main Header */}
         <h1 className="text-6xl font-extrabold mb-4 pt-32 animate-fadeIn tracking-wide">
           Welcome to <span className="text-gold-500 animate-pulse">Radio Msafiri</span>
         </h1>
-
-        {/* Mission Statement */}
         <p className="text-lg mb-6 animate-fadeIn text-gray-300">
           Depopulating Earth to Populate Heaven
         </p>
-
-        {/* Live Broadcast Message */}
         <p className="text-xl font-semibold mb-4 animate-fadeIn text-gray-200">
           Press the <span className="text-red-400">Live Icon</span> for Live Broadcast
         </p>
