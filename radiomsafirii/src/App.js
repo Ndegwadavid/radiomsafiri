@@ -9,6 +9,7 @@ import Events from './pages/Events';
 import Contact from './pages/Contact';
 import Team from './pages/Team';
 import Support from './pages/Support';
+import { Analytics } from "@vercel/analytics/react"
 
 function App() {
   return (
