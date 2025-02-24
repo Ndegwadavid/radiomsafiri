@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import './Sermons.css'; // Make sure this CSS file exists
+import React, { useState, useEffect } from 'react';
+import { Calendar, Book, Headphones, Gift } from 'lucide-react';
+import './Sermons.css';
 
 const sermons = [
   {
@@ -18,6 +19,14 @@ const sermons = [
 
 const Sermons = () => {
   const [activeSermon, setActiveSermon] = useState(null);
+  
+  useEffect(() => {
+    window.voiceflow = window.voiceflow || {};
+    window.voiceflow.interact = (message) => {
+      console.log("Voiceflow Interaction:", message);
+      // Additional logic for voiceflow bot interactions
+    };
+  }, []);
 
   const handlePlaySermon = (index) => {
     setActiveSermon(index);
@@ -26,7 +35,6 @@ const Sermons = () => {
   return (
     <section className="py-16 bg-gray-100" id="sermons">
       <div className="container mx-auto">
-        {/* Section Header */}
         <h2 className="text-4xl font-bold text-center mb-6 text-gray-800">
           Inspirational Sermons
         </h2>
@@ -34,26 +42,18 @@ const Sermons = () => {
           Experience powerful sermons inspired to enrich your spiritual journey and increase in faith
         </h3>
 
-        {/* Sermon Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {sermons.map((sermon, index) => (
             <div key={index} className="sermon-card p-6 bg-white rounded-lg shadow-lg flex flex-col">
-              {/* Sermon Image */}
               <img 
                 src={sermon.image} 
                 alt={sermon.title} 
                 className="rounded-lg mb-4 h-48 object-cover"
               />
-
-              {/* Sermon Title */}
               <h3 className="sermon-title mb-3">{sermon.title}</h3>
-
-              {/* Sermon Description */}
               <p className="sermon-description mb-4">{sermon.description}</p>
 
-              {/* Listen Button or Embedded Video */}
               {activeSermon === index ? (
-                // Show YouTube embed when "Listen to Sermon" is clicked
                 <div className="relative overflow-hidden rounded-lg">
                   <iframe 
                     width="100%" 
@@ -66,7 +66,6 @@ const Sermons = () => {
                   ></iframe>
                 </div>
               ) : (
-                // Button to play the sermon
                 <button 
                   onClick={() => handlePlaySermon(index)}
                   className="mt-auto px-4 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition"
@@ -78,7 +77,6 @@ const Sermons = () => {
           ))}
         </div>
 
-        {/* View All Sermons Button */}
         <div className="mt-12 text-center">
           <a 
             href="https://www.youtube.com/@Comeandreason5540"

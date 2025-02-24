@@ -1,6 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Team = () => {
+  useEffect(() => {
+    // Add the Voiceflow script dynamically to the page
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://cdn.voiceflow.com/widget-next/bundle.mjs';
+    script.onload = () => {
+      window.voiceflow.chat.load({
+        verify: { projectID: '67b4eb18ab4534bbe160925a' },
+        url: 'https://general-runtime.voiceflow.com',
+        versionID: 'production',
+      });
+    };
+    document.body.appendChild(script);
+
+    // Clean up the script when the component is unmounted
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-50 py-16 px-4">
       <div className="max-w-7xl mx-auto">
